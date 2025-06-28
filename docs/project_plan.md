@@ -20,7 +20,6 @@
 
 ## Phase 3: Extraction Layer
 - In `src/extractors.py`, implement `get_train_numbers()` to scrape `/TrainView/index.php`
-- Write unit tests for HTML parsing and deduplication logic
 
 ## Phase 4: Fetchers Package
 - Create `src/fetchers/rrschedules.py` with a function to call RRSchedules
@@ -49,7 +48,7 @@
 
 ## Phase 9: Deployment & Scheduling
 - Deploy `run_etl.py` to the remote server
-- Set up a crontab entry to execute the script nightly at 1:00 AM
+- Set up a crontab entry to execute the script nightly at 2:00 AM
 
 ## Phase 10: Documentation & Handoff
 - Finalize `README.md` with setup, usage, and extension instructions

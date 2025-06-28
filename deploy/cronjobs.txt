@@ -1,0 +1,8 @@
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin:/home/ubuntu/project-nexline/.venv/bin
+
+# Collect train numbers every 3 minutes from 04:00–02:00
+*/3 4-23,0-2 * * * cd /home/ubuntu/project-nexline && python scripts/collect_train_numbers.py >> logs/collect.log 2>&1
+
+# Run ETL once at 02:05
+5 2 * * * cd /home/ubuntu/project-nexline && python scripts/run_etl.py >> logs/etl.log 2>&1
