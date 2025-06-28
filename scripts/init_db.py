@@ -6,6 +6,11 @@ against the DuckDB database file to ensure the `schedules` table exists.
 """
 
 import sys
+from pathlib import Path
+
+# Ensure project root is on sys.path for module imports
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
 
 from src.db import init_db  # noqa: E402
 
