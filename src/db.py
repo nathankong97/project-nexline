@@ -24,7 +24,8 @@ def get_connection() -> duckdb.DuckDBPyConnection:
     Returns:
         duckdb.DuckDBPyConnection: An open connection to the DuckDB file.
     """
-    # Connect to DuckDB, creating the file if it does not exist
+    DB_FILE.parent.mkdir(parents=True, exist_ok=True)
+
     return duckdb.connect(database=str(DB_FILE), read_only=False)
 
 
