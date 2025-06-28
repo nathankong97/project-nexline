@@ -8,7 +8,7 @@ based on the primary key constraints.
 Strictly follows PEP8, uses Google style docstrings, and includes type hints.
 """
 from datetime import date
-from typing import List, Optional
+from typing import List
 
 from src.db import get_connection
 from src.transformer import CleanRecord
