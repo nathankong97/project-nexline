@@ -2,7 +2,7 @@
 
 Runs periodically to upsert unique train numbers into the `train_numbers` table for
 the correct service date. Service date rolls over at 2 AM (times between 00:00 and
-01:59 map to the previous calendar date).
+01:29 map to the previous calendar date).
 """
 import sys
 from datetime import datetime, date, time, timedelta
@@ -25,9 +25,10 @@ def get_service_date(now: datetime) -> date:
         now (datetime): The current timestamp.
 
     Returns:
-        date: If `now` is before 01:00, returns yesterday's date; otherwise today's date.
+        date: If `now` is before 01:30, returns yesterday's date; otherwise today's date.
     """
-    if now.time() < time(hour=1):
+    cutoff = time(hour=1, minute=30)
+    if now.time() < cutoff:
         return (now - timedelta(days=1)).date()
     return now.date()
 

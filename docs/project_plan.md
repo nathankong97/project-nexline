@@ -56,6 +56,52 @@
 
 ---
 
+## Phase 11: Dashboard Scaffold
+
+* **Folder & entrypoint**
+
+  * Create `dashboard/` directory
+  * Add `dashboard/app.py`
+* **Dependencies**
+
+  * Add `streamlit`, `duckdb`, `pandas` to `requirements.txt`
+* **Configuration**
+
+  * Read DuckDB filepath from an environment variable (for Streamlit Cloud)
+  * Add `.streamlit/secrets.toml` stub
+
+## Phase 12: Data Loading & Cache
+
+* In `app.py`, connect to DuckDB and load the `schedules` table via `pandas.read_sql()`
+* Wrap the load in `@st.cache_data` to avoid repeated queries
+* Expose a “Last updated” timestamp in the sidebar
+
+## Phase 13: Filters & UI Controls
+
+* Add sidebar widgets:
+
+  * **Date picker** (`st.date_input`) for range selection
+  * **Multiselect** for `train_no` and `station`
+* Write helper functions to apply filters to the DataFrame
+
+## Phase 14: Visualizations & Metrics
+
+* Time-series chart of average delay by day (`st.line_chart`)
+* Histogram or boxplot of delay distribution (`st.altair_chart`)
+* Data table preview (`st.dataframe`) limited to 10–15 rows
+* Summary stats (mean, median, max delay) in `st.metric` cards
+
+## Phase 15: Deployment & Automation
+
+* **Streamlit Cloud setup**:
+
+  * Connect GitHub repo to Streamlit Cloud
+  * Set `DUCKDB_PATH` in secrets
+* **GitHub Actions**: (optional) nightly ETL → push updated `data/*.duckdb` → trigger a redeploy
+* **Success check**: validate that live app refreshes with new data
+
+---
+
 ## Success Criteria
 
 - ETL runs nightly without errors.  
