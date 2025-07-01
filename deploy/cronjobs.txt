@@ -8,4 +8,4 @@ PATH=/usr/local/bin:/usr/bin:/bin:/home/ubuntu/project-nexline/.venv/bin
 0-30/5 1 * * * cd /home/ubuntu/project-nexline && python scripts/collect_train_numbers.py >> logs/collect.log 2>&1
 
 # Run ETL once at 02:00
-0 2 * * * cd /home/ubuntu/project-nexline && python scripts/run_etl.py >> logs/etl.log 2>&1
+0 2 * * * cd /home/ubuntu/project-nexline && python scripts/run_etl.py --db-path data/schedules.duckdb >> logs/etl.log 2>&1

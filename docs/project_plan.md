@@ -100,6 +100,92 @@
 * **GitHub Actions**: (optional) nightly ETL → push updated `data/*.duckdb` → trigger a redeploy
 * **Success check**: validate that live app refreshes with new data
 
+## Phase 16: Historical On-Time Scorecard
+
+### 16.1 Scoring Rubric & Windows
+
+* **Windows**: 3 days, 7 days, 14 days, 30 days.
+* **Minimum data**: Require each window length of days (e.g. 3 days needs at least 3 days of records).
+* **Grade cut-offs** (example—please adjust if you prefer different bands):
+
+  * **A**: ≥ 95% on-time
+  * **B**: ≥ 90%
+  * **C**: ≥ 80%
+  * **D**: ≥ 70%
+  * **F**: < 70%
+
+### 16.2 ETL: Build Summary Table
+
+**Table schema** (in DuckDB):
+
+```sql
+CREATE TABLE IF NOT EXISTS ontime_scorecard (
+  end_date    DATE,       -- the window’s last day (e.g. ’2025-06-30’)
+  window_days INT,        -- 3, 7, 14, or 30
+  line        TEXT,       -- Regional Rail line name
+  pct_on_time DOUBLE,     -- computed % on-time over that window
+  grade       TEXT        -- letter grade per rubric
+);
+```
+
+**Nightly ETL logic** (in your existing pipeline):
+
+1. For each `window_days` in \[3,7,14,30]:
+2. Compute `start_date = today() - (window_days - 1) days`.
+3. For each `line` in your `schedules` table, calculate
+
+   ```sql
+   SELECT 
+     AVG(CASE WHEN act_tm <= sched_tm THEN 1 ELSE 0 END) * 100 
+   FROM schedules 
+   WHERE service_date BETWEEN start_date AND today()
+     AND line = :line;
+   ```
+4. Map that percentage to a grade, then upsert into `ontime_scorecard` with `end_date = today()`.
+
+### 16.3 Dashboard UI: Scorecard View
+
+In `dashboard/app.py` (Streamlit):
+
+1. **Sidebar widgets**:
+
+   * **Window selector** (`st.selectbox`): “3 days”, “7 days”, “14 days”, “30 days”
+   * **Date selector** (`st.selectbox` of available `end_date` values from `ontime_scorecard`)
+2. **Main panel**:
+
+   * **Table or st.metric cards** listing each `line → grade` for the chosen window & date.
+   * A footnote: “Scores computed over X days of data.”
+
+## Phase 17: Data Overview Section
+
+* **Define UI placement**: Add a “Data Overview” tab in your Streamlit app.
+* **Load filters**: Expose date-range and (optionally) line selectors.
+* **Surface core metrics**: Show total trains and overall on-time percentage as text or metric cards.
+
+## Phase 18: On-Time vs. Late Proportion Chart
+
+* **Data query**: Compute counts of on-time vs. late departures for the selected window.
+* **Chart design**: Embed a pie (or donut) chart illustrating those two shares.
+* **Contextual labeling**: Include clear labels/percentages so non-technical viewers immediately grasp the split.
+
+## Phase 19: Delay Distribution Histogram
+
+* **Data bins**: Bucket delays into 0–5 min, 5–10 min, and 10 + min categories.
+* **Chart design**: Display a simple bar chart showing train counts in each bin.
+* **Interpretation aid**: Add axis titles and a brief caption (“Most delays fall within 0–5 min”).
+
+## Phase 20: Review, QA & Refinement
+
+* **Usability check**: Verify clarity with a sample audience or colleague.
+* **Performance test**: Ensure charts render quickly under typical data volumes.
+* **Visual polish**: Tweak titles, colors (Streamlit defaults), and layout for maximal readability.
+
+## Phase 21: Deploy & Announce
+
+* **Push to Streamlit Cloud**: Confirm secrets and deployment settings.
+* **Share public link**: Announce your new “Data Overview” section to your audience.
+* **Monitor feedback**: Gather user reactions for future enhancement.
+
 ---
 
 ## Success Criteria
