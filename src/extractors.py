@@ -3,7 +3,7 @@
 This module provides functionality to fetch SEPTA's TrainView API endpoint and
 extract a set of train numbers operating on the current service day.
 """
-from typing import Set
+from typing import Set, Optional
 
 import requests
 
@@ -33,9 +33,9 @@ def get_train_numbers() -> Set[str]:
 
     train_numbers: Set[str] = set()
     for record in data:
-        train_no = record.get("trainno")
+        train_no: Optional[str] = record.get("trainno")
         if train_no:
-            train_no = train_no.replace(".", "")
+            train_no = train_no.replace(".", "")  # Data cleaning from source data
             train_numbers.add(str(train_no))
 
     return train_numbers
