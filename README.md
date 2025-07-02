@@ -14,7 +14,7 @@ to scale to multiple agencies.
   and orchestration.
 * **Extensible Fetchers**: Fetch schedules via API packages under `src/fetchers/`; add new endpoints by dropping in a
   new module.
-* **Reliable Data Collection**: Collect script (`collect_train_numbers.py`) runs every 2–3 min from 4 AM–1 AM to
+* **Reliable Data Collection**: Collect script (`collect_train_numbers.py`) runs every 5 min from 4 AM–1:30 AM to
   accumulate a full day’s train numbers.
 * **DuckDB Storage**: Lightweight, zero‑server analytics store; stores both raw schedule snapshots and collected train
   numbers.

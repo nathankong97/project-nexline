@@ -169,7 +169,17 @@ In `dashboard/app.py` (Streamlit):
 * **Contextual labeling**: Include clear labels/percentages so non-technical viewers immediately grasp the split.
 
 ## Phase 19: Delay Distribution Histogram
+## Phase 18: On-Time vs. Late Proportion Chart
 
+* **Data query**: Compute counts of on-time vs. late departures for the selected window.
+* **Chart design**: Embed a pie (or donut) chart illustrating those two shares.
+* **Contextual labeling**: Include clear labels/percentages so non-technical viewers immediately grasp the split.
+
+## Phase 19: Delay Distribution Histogram
+
+* **Data bins**: Bucket delays into 0–5 min, 5–10 min, and 10 + min categories.
+* **Chart design**: Display a simple bar chart showing train counts in each bin.
+* **Interpretation aid**: Add axis titles and a brief caption (“Most delays fall within 0–5 min”).
 * **Data bins**: Bucket delays into 0–5 min, 5–10 min, and 10 + min categories.
 * **Chart design**: Display a simple bar chart showing train counts in each bin.
 * **Interpretation aid**: Add axis titles and a brief caption (“Most delays fall within 0–5 min”).

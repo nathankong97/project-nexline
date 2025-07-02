@@ -35,6 +35,7 @@ def get_train_numbers() -> Set[str]:
     for record in data:
         train_no = record.get("trainno")
         if train_no:
+            train_no = train_no.replace(".", "")
             train_numbers.add(str(train_no))
 
     return train_numbers
